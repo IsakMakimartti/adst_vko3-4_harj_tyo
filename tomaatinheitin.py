@@ -20,7 +20,7 @@ imageTomaatti = PhotoImage(file="tomaatti.png")
 # Kernestis Image
 imageKernesti = PhotoImage(file="kerne.png")
 imageLabelKernesti = tk.Label(tomaatinheitinIkkuna, image=imageKernesti)
-imageLabelKernesti.place(x=column_Kernesti * 200, y=row_Kernesti * 120) 
+imageLabelKernesti.place(x=column_Kernesti * 220, y=row_Kernesti * 100) 
 
 # Maalitaulu Image
 imageMaalitaulu = PhotoImage(file="maalitaulu.png")
@@ -33,7 +33,7 @@ def image_ernesti():
     imageErnesti = PhotoImage(file="erne.png")
     imageLabelErnesti = tk.Label(tomaatinheitinIkkuna, image=imageErnesti)
     imageLabelErnesti.image = imageErnesti 
-    imageLabelErnesti.place(x=column_Ernesti * 200, y=row_Ernesti * 120) 
+    imageLabelErnesti.place(x=column_Ernesti * 222, y=row_Ernesti * 100) 
 
 def show_ernesti():
     global onkoPainettu
@@ -49,19 +49,19 @@ def tomato_shooter_start(start_row, start_column, target_row, target_column):
     print("tomato_shooter pressed!")
 
     tomaatti = tk.Label(tomaatinheitinIkkuna, image=imageTomaatti, bg='#f7f6f6')
-    tomaatti.place(x=start_column * 200, y=start_row * 120)  # Adjust placement as needed
+    tomaatti.place(x=start_column * 220, y=start_row * 120) 
 
     def tomato_move():
         nonlocal start_row, start_column
         movement_Rate = 0.5
-        movementDelay = 100
+        movementDelay = 50
 
         if start_column < target_column:
             start_column += movement_Rate
         elif start_column > target_column:
             start_column -= movement_Rate
         
-        tomaatti.place(x=start_column * 200, y=start_row * 120)  # Adjust placement as needed
+        tomaatti.place(x=start_column * 220, y=start_row * 120)
 
         if start_column != target_column:
             tomaatinheitinIkkuna.after(movementDelay, tomato_move)
@@ -94,7 +94,7 @@ buttonShowErnesti = tk.Button(
     width=15,
     wraplength=100
 )
-buttonShowErnesti.place(relx=0.5, rely=0.9, anchor="center")  # Centered horizontally at the bottom
+buttonShowErnesti.place(relx=0.5, rely=0.9, anchor="center") 
 
 buttonShootErnesti = tk.Button(
     tomaatinheitinIkkuna, 
@@ -125,7 +125,7 @@ buttonShootErnesti = tk.Button(
     width=15,
     wraplength=100
 )
-buttonShootErnesti.place(relx=0.6, rely=0.1, anchor="center")  # Positioned at the top-left
+buttonShootErnesti.place(relx=0.6, rely=0.1, anchor="center")
 
 buttonShootKernesti = tk.Button(
     tomaatinheitinIkkuna, 
@@ -156,7 +156,6 @@ buttonShootKernesti = tk.Button(
     width=15,
     wraplength=100
 )
-buttonShootKernesti.place(relx=0.4, rely=0.1, anchor="center")  # Positioned slightly below the first button
+buttonShootKernesti.place(relx=0.4, rely=0.1, anchor="center")
 
-# Run the application
 tomaatinheitinIkkuna.mainloop()
