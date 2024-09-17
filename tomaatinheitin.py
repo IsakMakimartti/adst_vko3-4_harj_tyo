@@ -1,19 +1,11 @@
 import tkinter as tk
 import random
-from tkinter import *
+from tkinter import PhotoImage
 
+# Create the main window
 tomaatinheitinIkkuna = tk.Tk()
 tomaatinheitinIkkuna.title("Tomaatinheitin")
 tomaatinheitinIkkuna.geometry('1920x1080')
-
-# Configuration for grid layout
-for i in range(9):
-    tomaatinheitinIkkuna.grid_rowconfigure(i, weight=0)
-    tomaatinheitinIkkuna.grid_columnconfigure(i, weight=0)
-
-# Fix Maalitaulu
-    tomaatinheitinIkkuna.grid_rowconfigure(4, weight=1)
-    tomaatinheitinIkkuna.grid_columnconfigure(4, weight=1)
 
 # Initializing parameters
 onkoPainettu = False
@@ -28,12 +20,12 @@ imageTomaatti = PhotoImage(file="tomaatti.png")
 # Kernestis Image
 imageKernesti = PhotoImage(file="kerne.png")
 imageLabelKernesti = tk.Label(tomaatinheitinIkkuna, image=imageKernesti)
-imageLabelKernesti.grid(row=row_Kernesti, column=column_Kernesti, sticky="w")
+imageLabelKernesti.place(x=column_Kernesti * 200, y=row_Kernesti * 120) 
 
 # Maalitaulu Image
 imageMaalitaulu = PhotoImage(file="maalitaulu.png")
 imageLabelMaalitaulu = tk.Label(tomaatinheitinIkkuna, image=imageMaalitaulu)
-imageLabelMaalitaulu.grid(row=row_maalitaulu, column=column_Maalitaulu, sticky="nsew")
+imageLabelMaalitaulu.place(relx=0.5, rely=0.5, anchor="center") 
 
 # Ernestis Image
 def image_ernesti():
@@ -41,11 +33,11 @@ def image_ernesti():
     imageErnesti = PhotoImage(file="erne.png")
     imageLabelErnesti = tk.Label(tomaatinheitinIkkuna, image=imageErnesti)
     imageLabelErnesti.image = imageErnesti 
-    imageLabelErnesti.grid(row=row_Ernesti, column=column_Ernesti, sticky="e")
+    imageLabelErnesti.place(x=column_Ernesti * 200, y=row_Ernesti * 120) 
 
 def show_ernesti():
     global onkoPainettu
-    if onkoPainettu == False:
+    if not onkoPainettu:
         image_ernesti()
         print("Ernesti tuli näkyviin!")
         onkoPainettu = True
@@ -57,133 +49,114 @@ def tomato_shooter_start(start_row, start_column, target_row, target_column):
     print("tomato_shooter pressed!")
 
     tomaatti = tk.Label(tomaatinheitinIkkuna, image=imageTomaatti, bg='#f7f6f6')
-    tomaatti.grid(row=start_row, column=start_column)
+    tomaatti.place(x=start_column * 200, y=start_row * 120)  # Adjust placement as needed
 
     def tomato_move():
         nonlocal start_row, start_column
-        movement_Rate = 1
+        movement_Rate = 0.5
+        movementDelay = 100
 
-        if start_row < target_row:
-            start_row += movement_Rate
-        elif start_row > target_row:
-            start_row -= movement_Rate
-        
         if start_column < target_column:
             start_column += movement_Rate
         elif start_column > target_column:
             start_column -= movement_Rate
         
-        tomaatti.grid(row=start_row, column=start_column)
+        tomaatti.place(x=start_column * 200, y=start_row * 120)  # Adjust placement as needed
 
-        if ( start_column ) != ( target_column ):
-            tomaatinheitinIkkuna.after(100 , tomato_move)
+        if start_column != target_column:
+            tomaatinheitinIkkuna.after(movementDelay, tomato_move)
         else:
             tomaatti.destroy()
-
     tomato_move()
-    
-buttonShowErnesti = tk.Button(
-                tomaatinheitinIkkuna, 
-                text="Show Ernesti",
-                command=show_ernesti,
-                activebackground="black",
-                activeforeground="White",
-                anchor="s",
-                bd=3,
-                bg="lightgray",
-                cursor="hand2",
-                   
-disabledforeground=
-                "gray",
-                fg="black",
-                font=("Arial", 12),
-                height=2,
-                    
-highlightbackground=
-                "black",
-                highlightcolor="green",
-                highlightthickness=2,
-                justify="center",
-                overrelief="raised",
-                padx=5,
-                pady=1,
-                width=15,
-                wraplength=100
-            )
 
-buttonShowErnesti.grid(row=8, column=4, sticky="s")
+# Buttons
+buttonShowErnesti = tk.Button(
+    tomaatinheitinIkkuna, 
+    text="Show Ernesti",
+    command=show_ernesti,
+    activebackground="black",
+    activeforeground="White",
+    anchor="s",
+    bd=3,
+    bg="lightgray",
+    cursor="hand2",
+    disabledforeground="gray",
+    fg="black",
+    font=("Arial", 12),
+    height=2,
+    highlightbackground="black",
+    highlightcolor="green",
+    highlightthickness=2,
+    justify="center",
+    overrelief="raised",
+    padx=5,
+    pady=1,
+    width=15,
+    wraplength=100
+)
+buttonShowErnesti.place(relx=0.5, rely=0.9, anchor="center")  # Centered horizontally at the bottom
 
 buttonShootErnesti = tk.Button(
-                tomaatinheitinIkkuna, 
-                text="Ernesti",
-                command=lambda: tomato_shooter_start(
-                    start_row=row_Ernesti, 
-                    start_column=column_Ernesti, 
-                    target_row=row_maalitaulu, 
-                    target_column=column_Maalitaulu
-                    ),
-                activebackground="black",
-                activeforeground="White",
-                anchor="s",
-                bd=3,
-                bg="lightgray",
-                cursor="hand2",
-                   
-disabledforeground=
-                "gray",
-                fg="black",
-                font=("Arial", 12),
-                height=2,
-                    
-highlightbackground=
-                "black",
-                highlightcolor="green",
-                highlightthickness=2,
-                justify="center",
-                overrelief="raised",
-                padx=5,
-                pady=1,
-                width=15,
-                wraplength=100
-            )
-
-buttonShootErnesti.grid(row=0, column=5, sticky="n")
-
+    tomaatinheitinIkkuna, 
+    text="Ernesti",
+    command=lambda: tomato_shooter_start(
+        start_row=row_Ernesti, 
+        start_column=column_Ernesti, 
+        target_row=row_maalitaulu, 
+        target_column=column_Maalitaulu
+    ),
+    activebackground="black",
+    activeforeground="White",
+    anchor="s",
+    bd=3,
+    bg="lightgray",
+    cursor="hand2",
+    disabledforeground="gray",
+    fg="black",
+    font=("Arial", 12),
+    height=2,
+    highlightbackground="black",
+    highlightcolor="green",
+    highlightthickness=2,
+    justify="center",
+    overrelief="raised",
+    padx=5,
+    pady=1,
+    width=15,
+    wraplength=100
+)
+buttonShootErnesti.place(relx=0.6, rely=0.1, anchor="center")  # Positioned at the top-left
 
 buttonShootKernesti = tk.Button(
-                tomaatinheitinIkkuna, 
-                text="Kernesti",
-                command=lambda: tomato_shooter_start(
-                    start_row=row_Kernesti, 
-                    start_column=column_Kernesti, 
-                    target_row=row_maalitaulu, 
-                    target_column=column_Maalitaulu
-                    ),
-                activebackground="black",
-                activeforeground="White",
-                anchor="s",
-                bd=3,
-                bg="lightgray",
-                cursor="hand2",
-                   
-disabledforeground=
-                "gray",
-                fg="black",
-                font=("Arial", 12),
-                height=2,
-                    
-highlightbackground=
-                "black",
-                highlightcolor="green",
-                highlightthickness=2,
-                justify="center",
-                overrelief="raised",
-                padx=5,
-                pady=1,
-                width=15,
-                wraplength=100
-            )
+    tomaatinheitinIkkuna, 
+    text="Kernesti",
+    command=lambda: tomato_shooter_start(
+        start_row=row_Kernesti, 
+        start_column=column_Kernesti, 
+        target_row=row_maalitaulu, 
+        target_column=column_Maalitaulu
+    ),
+    activebackground="black",
+    activeforeground="White",
+    anchor="s",
+    bd=3,
+    bg="lightgray",
+    cursor="hand2",
+    disabledforeground="gray",
+    fg="black",
+    font=("Arial", 12),
+    height=2,
+    highlightbackground="black",
+    highlightcolor="green",
+    highlightthickness=2,
+    justify="center",
+    overrelief="raised",
+    padx=5,
+    pady=1,
+    width=15,
+    wraplength=100
+)
+buttonShootKernesti.place(relx=0.4, rely=0.1, anchor="center")  # Positioned slightly below the first button
 
-buttonShootKernesti.grid(row=0, column=3, sticky="n")
-
+# Run the application
 tomaatinheitinIkkuna.mainloop()
