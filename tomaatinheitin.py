@@ -2,6 +2,7 @@ import tkinter as tk
 import random
 from tkinter import PhotoImage
 import csv
+import winsound
 
 # Create the main window
 tomaatinheitinIkkuna = tk.Tk()
@@ -84,9 +85,10 @@ def tomato_shooter_start(
         if who_is_shooting == True:
             if start_column == target_column and start_row == target_row:
                 print("Kernesti osui maaliin!")
+                winsound.Beep(400, 200)
                 field_names = ['Name', 'Status']
                 data = [{'Name': 'Kernesti', 'Status': 'Osui'}]
-                with open ('Stats.csv', 'a') as csvfile:
+                with open ('Stats.csv', 'a', newline='') as csvfile:
                     writer = csv.DictWriter(csvfile, fieldnames=field_names)
 
                     isFileEmpty = csvfile.tell() == 0
@@ -102,9 +104,10 @@ def tomato_shooter_start(
         else: 
             if start_column == target_column and start_row == target_row:
                 print("Ernesti osui maaliin!")
+                winsound.Beep(400, 200)
                 field_names = ['Name', 'Status']
                 data = [{'Name': 'Ernesti', 'Status': 'Osui'}]
-                with open ('Stats.csv', 'a') as csvfile:
+                with open ('Stats.csv', 'a', newline='') as csvfile:
                     writer = csv.DictWriter(csvfile, fieldnames=field_names)
 
                     isFileEmpty = csvfile.tell() == 0
