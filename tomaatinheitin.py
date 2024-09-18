@@ -45,28 +45,58 @@ def show_ernesti():
         print("Ernesti on jo näkyvissä")
 
 # Tomato throw functionality
-def tomato_shooter_start(start_row, start_column, target_row, target_column):
+def tomato_shooter_start(
+        start_row, 
+        start_column, 
+        target_row, 
+        target_column, 
+        target_columnErnesti,
+        target_columnKernesti, 
+        who_is_shooting
+        ):
     print("tomato_shooter pressed!")
 
     tomaatti = tk.Label(tomaatinheitinIkkuna, image=imageTomaatti, bg='#f7f6f6')
     tomaatti.place(x=start_column * 220, y=start_row * 120) 
 
     def tomato_move():
-        nonlocal start_row, start_column
+        nonlocal start_row, start_column, target_row, target_column
         movement_Rate = 0.5
         movementDelay = 50
 
-        if start_column < target_column:
-            start_column += movement_Rate
-        elif start_column > target_column:
-            start_column -= movement_Rate
-        
+        # Check who is shooting and move tomato horizontally
+        if who_is_shooting == True:
+            if start_column < target_columnErnesti:
+                start_column += movement_Rate
+            elif start_column > target_columnErnesti:
+                start_column -= movement_Rate
+        else:
+            if start_column < target_columnKernesti:
+                start_column += movement_Rate
+            elif start_column > target_columnKernesti:
+                start_column -= movement_Rate
+
         tomaatti.place(x=start_column * 220, y=start_row * 120)
 
-        if start_column != target_column:
-            tomaatinheitinIkkuna.after(movementDelay, tomato_move)
-        else:
-            tomaatti.destroy()
+        # Check who is shooting and if tomato hits goal, otherwise keep moving horizontally and destroy.
+        if who_is_shooting == True:
+            if start_column == target_column and start_row == target_row:
+                print("Kernesti osui maaliin!")
+                tomaatti.destroy()
+            elif start_column != target_columnErnesti:
+                tomaatinheitinIkkuna.after(movementDelay, tomato_move)
+            else:
+                tomaatti.destroy()
+        else: 
+            if start_column == target_column and start_row == target_row:
+                print("Ernesti osui maaliin!")
+                tomaatti.destroy()
+            elif start_column != target_columnKernesti:
+                tomaatinheitinIkkuna.after(movementDelay, tomato_move)
+            else:
+                tomaatti.destroy()
+        
+
     tomato_move()
 
 # Buttons
@@ -103,7 +133,10 @@ buttonShootErnesti = tk.Button(
         start_row=row_Ernesti, 
         start_column=column_Ernesti, 
         target_row=row_maalitaulu, 
-        target_column=column_Maalitaulu
+        target_column=column_Maalitaulu,
+        target_columnErnesti=column_Ernesti,
+        target_columnKernesti=column_Kernesti,
+        who_is_shooting=False
     ),
     activebackground="black",
     activeforeground="White",
@@ -134,7 +167,10 @@ buttonShootKernesti = tk.Button(
         start_row=row_Kernesti, 
         start_column=column_Kernesti, 
         target_row=row_maalitaulu, 
-        target_column=column_Maalitaulu
+        target_column=column_Maalitaulu,
+        target_columnErnesti=column_Ernesti,
+        target_columnKernesti=column_Kernesti,
+        who_is_shooting=True
     ),
     activebackground="black",
     activeforeground="White",
