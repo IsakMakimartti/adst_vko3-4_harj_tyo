@@ -38,7 +38,7 @@ imageLabelErnesti = tk.Label(tomaatinheitinIkkuna, image=imageErnesti)
 def image_ernesti():
     global row_Ernesti, column_Ernesti
     imageLabelErnesti.image = imageErnesti 
-    imageLabelErnesti.place(x=column_Ernesti * 173, y=row_Ernesti * 100) 
+    imageLabelErnesti.place(x=column_Ernesti * 220, y=row_Ernesti * 100) 
 
 def show_ernesti():
     global onkoPainettu, row_Ernesti
@@ -48,7 +48,6 @@ def show_ernesti():
         print("Ernesti tuli näkyviin!")
         onkoPainettu = True
     else: 
-        print("Ernesti on jo näkyvissä")
         row_Ernesti = random.randint (2, 6)
         image_ernesti()
        
@@ -106,8 +105,18 @@ def tomato_shooter_start(
                 tomaatinheitinIkkuna.after(movementDelay, tomato_move)
             elif start_column == column_Ernesti and start_row == row_Ernesti:
                 print("Kernesti osui Ernestiin")
-                # Tähän toteutus sille että ernesti ampuu takasin.
-                
+                tomaatti.destroy()
+                # Kernesti ampuu takaisin kernestiä päin
+                tomato_shooter_start(
+                    start_row=row_Ernesti, 
+                    start_column=column_Ernesti, 
+                    target_row=row_maalitaulu, 
+                    target_column=column_Maalitaulu,
+                    target_columnErnesti=column_Ernesti,
+                    target_columnKernesti=column_Kernesti,
+                    who_is_shooting=False
+                )
+                print("Ernesti ampuu takaisin")
             else:
                 tomaatti.destroy()
         else: 
