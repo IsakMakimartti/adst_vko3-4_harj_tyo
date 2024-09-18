@@ -144,11 +144,10 @@ def tomato_shooter_start(
                 tomaatinheitinIkkuna.after(movementDelay, tomato_move)
             else:
                 tomaatti.destroy()
-        
-
+    
     tomato_move()
 
-# Buttons
+# Buttons for shooting tomatos
 buttonShowErnesti = tk.Button(
     tomaatinheitinIkkuna, 
     text="Show Ernesti",
@@ -243,6 +242,7 @@ buttonShootKernesti = tk.Button(
 )
 buttonShootKernesti.place(relx=0.4, rely=0.1, anchor="center")
 
+# Reset functionality and button
 def resetData():
     with open ('Stats.csv', 'w', newline='') as emptyFile:
         emptyFile.truncate()
@@ -276,6 +276,7 @@ buttonReset = tk.Button(
 )
 buttonReset.place(relx=0.5, rely=0.71, anchor="center")
 
+# Read score data for Ernesti and Kernesti
 def readKernestiData():
     with open('Stats.csv', newline='') as fileKernesti:
         reader = csv.DictReader(fileKernesti)
@@ -304,6 +305,7 @@ def readErnestiData():
 
 scoreKernesti = tk.StringVar()
 scoreKernesti.set(readKernestiData())
+
 # Labels
 labelScoreKernesti = tk.Label(
     tomaatinheitinIkkuna,
@@ -348,4 +350,6 @@ labelScoreErnesti = tk.Label(
 
 labelScoreErnesti.place(relx=0.54, rely=0.3, anchor="center")
 
+# Reset data and start program
+resetData()
 tomaatinheitinIkkuna.mainloop()
