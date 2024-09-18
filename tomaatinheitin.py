@@ -11,9 +11,10 @@ tomaatinheitinIkkuna.geometry('1920x1080')
 
 # Initializing parameters
 onkoPainettu = False
-# random.randint(0, 8)
-row_Ernesti = 4
-row_Kernesti = 4
+
+#random.randint(0, 8)
+row_Ernesti = random.randint(2, 6)
+row_Kernesti = random.randint(2, 6)
 row_maalitaulu = 4
 column_Ernesti = 8
 column_Kernesti = 0
@@ -28,25 +29,29 @@ imageLabelKernesti.place(x=column_Kernesti * 220, y=row_Kernesti * 100)
 # Maalitaulu Image
 imageMaalitaulu = PhotoImage(file="maalitaulu.png")
 imageLabelMaalitaulu = tk.Label(tomaatinheitinIkkuna, image=imageMaalitaulu)
-imageLabelMaalitaulu.place(relx=0.5, rely=0.5, anchor="center") 
+imageLabelMaalitaulu.place(relx=0.5, rely=0.5, anchor="center")
+
+imageErnesti = PhotoImage(file="erne.png")
+imageLabelErnesti = tk.Label(tomaatinheitinIkkuna, image=imageErnesti)
 
 # Ernestis Image
 def image_ernesti():
     global row_Ernesti, column_Ernesti
-    imageErnesti = PhotoImage(file="erne.png")
-    imageLabelErnesti = tk.Label(tomaatinheitinIkkuna, image=imageErnesti)
     imageLabelErnesti.image = imageErnesti 
-    imageLabelErnesti.place(x=column_Ernesti * 222, y=row_Ernesti * 100) 
+    imageLabelErnesti.place(x=column_Ernesti * 173, y=row_Ernesti * 100) 
 
 def show_ernesti():
-    global onkoPainettu
+    global onkoPainettu, row_Ernesti
+  
     if not onkoPainettu:
         image_ernesti()
         print("Ernesti tuli näkyviin!")
         onkoPainettu = True
     else: 
         print("Ernesti on jo näkyvissä")
-
+        row_Ernesti = random.randint (2, 6)
+        image_ernesti()
+       
 # Tomato throw functionality
 def tomato_shooter_start(
         start_row, 
@@ -99,6 +104,10 @@ def tomato_shooter_start(
                 tomaatti.destroy()
             elif start_column != target_columnErnesti:
                 tomaatinheitinIkkuna.after(movementDelay, tomato_move)
+            elif start_column == column_Ernesti and start_row == row_Ernesti:
+                print("Kernesti osui Ernestiin")
+                # Tähän toteutus sille että ernesti ampuu takasin.
+                
             else:
                 tomaatti.destroy()
         else: 
