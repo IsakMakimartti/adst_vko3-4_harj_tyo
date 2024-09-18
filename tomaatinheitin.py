@@ -98,15 +98,16 @@ def tomato_shooter_start(
                     isFileEmpty = csvfile.tell() == 0
                     if isFileEmpty:
                          writer.writeheader()
-
+  
                     writer.writerows(data)
                 tomaatti.destroy()
             elif start_column != target_columnErnesti:
                 tomaatinheitinIkkuna.after(movementDelay, tomato_move)
             elif start_column == column_Ernesti and start_row == row_Ernesti:
                 print("Kernesti osui Ernestiin")
+                winsound.Beep(900, 200)
                 tomaatti.destroy()
-                # Kernesti ampuu takaisin kernestiä päin
+                # Ernesti shoots back at Kernesti
                 tomato_shooter_start(
                     start_row=row_Ernesti, 
                     start_column=column_Ernesti, 
