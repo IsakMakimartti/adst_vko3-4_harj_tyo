@@ -1,6 +1,7 @@
 import tkinter as tk
 import random
 from tkinter import PhotoImage
+import csv
 
 # Create the main window
 tomaatinheitinIkkuna = tk.Tk()
@@ -9,8 +10,9 @@ tomaatinheitinIkkuna.geometry('1920x1080')
 
 # Initializing parameters
 onkoPainettu = False
-row_Ernesti = random.randint(0, 8)
-row_Kernesti = random.randint(0, 8)
+# random.randint(0, 8)
+row_Ernesti = 4
+row_Kernesti = 4
 row_maalitaulu = 4
 column_Ernesti = 8
 column_Kernesti = 0
@@ -82,6 +84,16 @@ def tomato_shooter_start(
         if who_is_shooting == True:
             if start_column == target_column and start_row == target_row:
                 print("Kernesti osui maaliin!")
+                field_names = ['Name', 'Status']
+                data = [{'Name': 'Kernesti', 'Status': 'Osui'}]
+                with open ('Stats.csv', 'a') as csvfile:
+                    writer = csv.DictWriter(csvfile, fieldnames=field_names)
+
+                    isFileEmpty = csvfile.tell() == 0
+                    if isFileEmpty:
+                         writer.writeheader()
+
+                    writer.writerows(data)
                 tomaatti.destroy()
             elif start_column != target_columnErnesti:
                 tomaatinheitinIkkuna.after(movementDelay, tomato_move)
@@ -90,6 +102,16 @@ def tomato_shooter_start(
         else: 
             if start_column == target_column and start_row == target_row:
                 print("Ernesti osui maaliin!")
+                field_names = ['Name', 'Status']
+                data = [{'Name': 'Ernesti', 'Status': 'Osui'}]
+                with open ('Stats.csv', 'a') as csvfile:
+                    writer = csv.DictWriter(csvfile, fieldnames=field_names)
+
+                    isFileEmpty = csvfile.tell() == 0
+                    if isFileEmpty:
+                         writer.writeheader()
+
+                    writer.writerows(data)
                 tomaatti.destroy()
             elif start_column != target_columnKernesti:
                 tomaatinheitinIkkuna.after(movementDelay, tomato_move)
