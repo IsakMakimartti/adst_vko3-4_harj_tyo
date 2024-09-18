@@ -3,6 +3,7 @@ import random
 from tkinter import PhotoImage
 import csv
 import winsound
+from tkinter import *
 
 # Create the main window
 tomaatinheitinIkkuna = tk.Tk()
@@ -11,8 +12,6 @@ tomaatinheitinIkkuna.geometry('1920x1080')
 
 # Initializing parameters
 onkoPainettu = False
-
-#random.randint(0, 8)
 row_Ernesti = random.randint(2, 6)
 row_Kernesti = random.randint(2, 6)
 row_maalitaulu = 4
@@ -33,6 +32,10 @@ imageLabelMaalitaulu.place(relx=0.5, rely=0.5, anchor="center")
 
 imageErnesti = PhotoImage(file="erne.png")
 imageLabelErnesti = tk.Label(tomaatinheitinIkkuna, image=imageErnesti)
+
+# Scoreboard
+scoreboard = Frame(tomaatinheitinIkkuna)
+scoreboard.place(relx=0.5, rely=0.5, anchor="center")
 
 # Ernestis Image
 def image_ernesti():
@@ -100,6 +103,7 @@ def tomato_shooter_start(
                          writer.writeheader()
   
                     writer.writerows(data)
+                scoreKernesti.set(readKernestiData())
                 tomaatti.destroy()
             elif start_column != target_columnErnesti:
                 tomaatinheitinIkkuna.after(movementDelay, tomato_move)
@@ -134,6 +138,7 @@ def tomato_shooter_start(
                          writer.writeheader()
 
                     writer.writerows(data)
+                scoreErnesti.set(readErnestiData())
                 tomaatti.destroy()
             elif start_column != target_columnKernesti:
                 tomaatinheitinIkkuna.after(movementDelay, tomato_move)
@@ -237,5 +242,110 @@ buttonShootKernesti = tk.Button(
     wraplength=100
 )
 buttonShootKernesti.place(relx=0.4, rely=0.1, anchor="center")
+
+def resetData():
+    with open ('Stats.csv', 'w', newline='') as emptyFile:
+        emptyFile.truncate()
+    
+    scoreKernesti.set(readKernestiData())
+    scoreErnesti.set(readErnestiData())
+
+buttonReset = tk.Button(
+    tomaatinheitinIkkuna, 
+    text="Reset",
+    command=lambda: resetData(),
+    activebackground="black",
+    activeforeground="White",
+    anchor="s",
+    bd=3,
+    bg="lightgray",
+    cursor="hand2",
+    disabledforeground="gray",
+    fg="black",
+    font=("Arial", 12),
+    height=2,
+    highlightbackground="black",
+    highlightcolor="green",
+    highlightthickness=2,
+    justify="center",
+    overrelief="raised",
+    padx=5,
+    pady=1,
+    width=15,
+    wraplength=100
+)
+buttonReset.place(relx=0.5, rely=0.71, anchor="center")
+
+def readKernestiData():
+    with open('Stats.csv', newline='') as fileKernesti:
+        reader = csv.DictReader(fileKernesti)
+        # Name column
+        column_index = 'Name'
+        name = 'Kernesti'
+        counter = 0
+
+        for row in reader:
+            if row[column_index] == name:
+                counter += 1
+    return counter
+
+def readErnestiData():
+    with open('Stats.csv', newline='') as fileErnesti:
+        reader = csv.DictReader(fileErnesti)
+        # Name column
+        column_index = 'Name'
+        name = 'Ernesti'
+        counter = 0
+
+        for row in reader:
+            if row[column_index] == name:
+                counter += 1
+    return counter
+
+scoreKernesti = tk.StringVar()
+scoreKernesti.set(readKernestiData())
+# Labels
+labelScoreKernesti = tk.Label(
+    tomaatinheitinIkkuna,
+    textvariable=scoreKernesti,
+    anchor=tk.CENTER,
+    bg="lightgray",
+    height=3,
+    width=10,
+    font=("Arial", 16, "bold"),
+    cursor="hand2",
+    fg="black",
+    padx=15,
+    pady=15,
+    justify=tk.CENTER,
+    relief=tk.RAISED,
+    underline=0,
+    wraplength=250
+)
+
+labelScoreKernesti.place(relx=0.46, rely=0.3, anchor="center")
+
+scoreErnesti = tk.StringVar()
+scoreErnesti.set(readErnestiData())
+
+labelScoreErnesti = tk.Label(
+    tomaatinheitinIkkuna,
+    textvariable=scoreErnesti,
+    anchor=tk.CENTER,
+    bg="lightgray",
+    height=3,
+    width=10,
+    font=("Arial", 16, "bold"),
+    cursor="hand2",
+    fg="black",
+    padx=15,
+    pady=15,
+    justify=tk.CENTER,
+    relief=tk.RAISED,
+    underline=0,
+    wraplength=250
+)
+
+labelScoreErnesti.place(relx=0.54, rely=0.3, anchor="center")
 
 tomaatinheitinIkkuna.mainloop()
